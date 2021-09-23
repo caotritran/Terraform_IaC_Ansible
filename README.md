@@ -7,7 +7,7 @@
 - Jenkins nodes communicate with each other via SSH
 - User accesses domain with SSL via route 53 to enter jenkins master.
 - Terraform will save state file in S3
-![alt text](picture.png "Diagram")
+![alt text](./depend/picture.png "Diagram")
 
 ## Step 1
 - Make sure create user programatic IAM `terraform` with permission is `./depend/terraform_deployment_lax_iam_policy.json`
