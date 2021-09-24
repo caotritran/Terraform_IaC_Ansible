@@ -86,7 +86,10 @@ resource "aws_vpc_peering_connection" "useast1-uswest2" {
   provider = aws.region-master
   peer_vpc_id   = aws_vpc.vpc_worker_oregon.id
   vpc_id        = aws_vpc.vpc_master.id
-  peer_region   = var.region-master
+  peer_region   = var.region-worker
+  tags = {
+    Name = "VPC-peering-useast1-uswest2"
+  }
 }
 
 #create accept connection from us-east-1 to us-west-2
