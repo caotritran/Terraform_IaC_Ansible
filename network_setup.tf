@@ -152,3 +152,112 @@ resource "aws_main_route_table_association" "set-worker-default-rt-assoc" {
   vpc_id         = aws_vpc.vpc_worker_oregon.id
   route_table_id = aws_route_table.internet_route_oregon.id
 }
+
+#create SG for LB, only allow 80 and 443 and outbound access
+resource "aws_security_group" "lb-sg" {
+  provider = aws.region-master
+  name        = "lg-sg"
+  description = "Allow port HTTP and HTTPS to jenkins"
+  vpc_id      = aws_vpc.vpc_master.id
+
+  ingress {
+      description      = "Allow HTTPS"
+      from_port        = 443
+      to_port          = 443
+      protocol         = "tcp"
+      cidr_blocks      = ["0.0.0.0/0"]
+    }
+  ingress {
+      description      = "Allow HTTP"
+      from_port        = 80
+      to_port          = 80
+      protocol         = "tcp"
+      cidr_blocks      = ["0.0.0.0/0"]
+    }
+
+  egress {
+      from_port        = 0
+      to_port          = 0
+      protocol         = "-1"
+      cidr_blocks      = ["0.0.0.0/0"]
+    }
+
+  tags = {
+    Name = "allow_http_https"
+  }
+}
+
+#create SG for jenkins master, allow 8080 from ALB and allow all to jenkins worker
+resource "aws_security_group" "sg-jenkins-master" {
+  provider = aws.region-master
+  name        = "allow_traffic_jenkins_master"
+  description = "Allow 8080 and peering"
+  vpc_id      = aws_vpc.vpc_master.id
+
+  ingress {
+      description      = "allow port 8080"
+      from_port        = 8080
+      to_port          = 8080
+      protocol         = "tcp"
+      security_groups      = [aws_security_group.lb-sg.id]
+    }
+  ingress {
+      description      = "allow port 22"
+      from_port        = 22
+      to_port          = 22
+      protocol         = "tcp"
+      cidr_blocks      = [var.external_ip]
+    }
+  ingress {
+      description      = "allow traffic from us-west-2"
+      from_port        = 0
+      to_port          = 0
+      protocol         = "-1"
+      cidr_blocks      = ["192.168.1.0/24"]
+    }
+
+  egress {
+      from_port        = 0
+      to_port          = 0
+      protocol         = "-1"
+      cidr_blocks      = ["0.0.0.0/0"]
+    }
+
+  tags = {
+    Name = "allow_traffic_jenkins_master"
+  }
+}
+
+#create SG for jenkins worker, allow traffice from jenkins master and port 22
+resource "aws_security_group" "sg-jenkins-worker" {
+  provider = aws.region-worker
+  name        = "allow_traffic_jenkins_worker"
+  description = "Allow traffic from jenkins master"
+  vpc_id      = aws_vpc.vpc_worker_oregon.id
+
+  ingress {
+      description      = "Allow traffic from jenkins master"
+      from_port        = 0
+      to_port          = 0
+      protocol    = "-1"
+      cidr_blocks      = ["10.0.1.0/24"]
+    }
+  ingress {
+      description      = "allow port 22"
+      from_port        = 22
+      to_port          = 22
+      protocol         = "tcp"
+      cidr_blocks      = [var.external_ip]
+    }
+
+  egress {
+      from_port        = 0
+      to_port          = 0
+      protocol         = "-1"
+      cidr_blocks      = ["0.0.0.0/0"]
+    }
+
+  tags = {
+    Name = "allow_traffic_jenkins_worker"
+  }
+}
