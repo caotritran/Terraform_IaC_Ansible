@@ -16,3 +16,5 @@
 - Configure aws with profile is terraform: `aws configure --profile terraform`
 - Create S3 bucket name: `aws s3api create-bucket --bucket terraformstate1994 --profile terraform` 
 - install boto3 using pip3: `pip3 install boto3 --user`
+- noted: with plugin aws_ec2 in ansible, you need follow option `boto_profile: <aws_profile>` if using aws configure --profile affter
+- when run ansible playbook, make sure private key id_rsa located at ~/.ssh/id_rsa

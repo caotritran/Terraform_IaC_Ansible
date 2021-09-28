@@ -8,3 +8,7 @@ output "Jenkin-worker-nodes-public-ip" {
     instance.id => instance.public_ip
   }
 }
+
+output "dns-ALB" {
+  value = aws_lb.application-lb.dns_name
+}
