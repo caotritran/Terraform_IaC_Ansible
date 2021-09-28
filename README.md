@@ -10,8 +10,9 @@
 
 ![alt text](./depend/picture.png "Diagram")
 
-## Step 1
+## Pre-run
 - Make sure create user programatic IAM `terraform` with permission is `./depend/terraform_deployment_lax_iam_policy.json`
 - Make sure localhost install: aws-cli, terraform, ansible
 - Configure aws with profile is terraform: `aws configure --profile terraform`
 - Create S3 bucket name: `aws s3api create-bucket --bucket terraformstate1994 --profile terraform` 
+- install boto3 using pip3: `pip3 install boto3 --user`

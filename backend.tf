@@ -7,6 +7,6 @@ terraform {
     region  = "us-east-1"
     profile = "terraform"
     key     = "terraformstatefile"
-    bucket  = "terraformstate1994"
+    bucket  = "terraformstate1994a"
   }
 }

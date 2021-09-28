@@ -14,16 +14,16 @@ variable "region-worker" {
 }
 
 variable "external_ip" {
-  type = string
+  type    = string
   default = "0.0.0.0/0"
 }
 
 variable "instance_type" {
-  type = string
+  type    = string
   default = "t3.micro"
 }
 
 variable "workers-count" {
-  type = number
+  type    = number
   default = 1
 }
