@@ -18,3 +18,4 @@
 - install boto3 using pip3: `pip3 install boto3 --user`
 - noted: with plugin aws_ec2 in ansible, you need follow option `boto_profile: <aws_profile>` if using aws configure --profile affter
 - when run ansible playbook, make sure private key id_rsa located at ~/.ssh/id_rsa
+- Determine domain in route53: `aws route53 list-hosted-zones --profile terraform`, edit domain at variables.tf
