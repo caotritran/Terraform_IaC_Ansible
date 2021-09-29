@@ -10,9 +10,9 @@ resource "aws_acm_certificate" "jenkins-lb-https" {
 }
 
 resource "aws_acm_certificate_validation" "example" {
-  provider                = aws.region-master
-  certificate_arn         = aws_acm_certificate.jenkins-lb-https.arn
-  for_each                = aws_route53_record.cert_validation
+  provider        = aws.region-master
+  certificate_arn = aws_acm_certificate.jenkins-lb-https.arn
+  for_each        = aws_route53_record.cert_validation
   #validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
   validation_record_fqdns = [aws_route53_record.cert_validation[each.key].fqdn]
 }

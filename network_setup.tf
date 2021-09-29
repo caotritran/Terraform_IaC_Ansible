@@ -196,8 +196,8 @@ resource "aws_security_group" "sg-jenkins-master" {
 
   ingress {
     description     = "allow port 8080"
-    from_port       = var.webserver-port
-    to_port         = var.webserver-port
+    from_port       = 8080
+    to_port         = 8080
     protocol        = "tcp"
     security_groups = [aws_security_group.lb-sg.id]
   }

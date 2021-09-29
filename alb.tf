@@ -69,5 +69,5 @@ resource "aws_lb_target_group_attachment" "test" {
   provider         = aws.region-master
   target_group_arn = aws_lb_target_group.app-lb-tg.arn
   target_id        = aws_instance.jenkins-master.id
-  port             = var.webserver-port
+  port             = 8080
 }
